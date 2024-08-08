@@ -65,9 +65,12 @@ def hello_world():
             db.session.add(db_book)
             db.session.commit()
         
-   
     first_ten_books = res['items'][:10]
-    return render_template('home.html', url=final_url, books=first_ten_books, book_length=len(first_ten_books))
+    favorites = []
+    if 'username' in session:
+        favorites = User.query.get(session['username']).favorites
+
+    return render_template('home.html', url=final_url, books=first_ten_books, favorites=favorites)
 
 # @app.route('/1')
 # def number_one():
@@ -84,8 +87,11 @@ def register():
             flash("This username already exists.")
             return render_template('register.html')
         else:
-            user = (User(username=request.form['username'],
-                        password=request.form['password']))
+            user = User(
+                username=request.form['username'],
+                password=request.form['password']
+            )
+            
             db.session.add(user)
             db.session.commit()
             flash("Your account has been created.")
