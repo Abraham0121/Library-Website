@@ -35,7 +35,42 @@ nav a{
 }
 
 /***************************************Home*/
+* {
+    text-decoration: none;
+}
+#Home {
+    width: 800px;
+    /* height: 400px; */
+    margin: 0 auto;
+    border: 1px solid black;
+    position: relative;
+    top: 80px;
+}
 
 #Home-Welcome{
     color: #bdc3c7;
+}
+
+#Home-search-form {
+    padding: 10px;
+}
+
+#Home ul {
+    list-style: none;
+}
+
+.book-preview {
+    border: 2px solid green;
+    padding: 10px;
+    
+}
+#book-previews li {
+    position: relative;
+}
+
+
+#star-container {
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }

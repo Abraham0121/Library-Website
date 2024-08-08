@@ -20,3 +20,4 @@ Note: Live Link and Picture of Frontpage
 ### External APIs
 - Google Books API
 
+Note: Will add database schema here
