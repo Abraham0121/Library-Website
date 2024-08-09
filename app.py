@@ -18,7 +18,7 @@ API_KEY = 'AIzaSyDM7IREB5FJ2dom6ZIlXuW9rVxITR4qOyc'
 
 connect_db(app)
 
-# db.drop_all()
+db.drop_all()
 db.create_all()
         
 
