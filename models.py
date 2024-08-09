@@ -52,7 +52,7 @@ class Category_Book(db.Model):
 
 favorites = db.Table("favorites",
     db.Column("username", db.String, db.ForeignKey("users.username"), primary_key = True),
-    db.Column("book_id", db.Integer, db.ForeignKey("books.isbn"), primary_key = True)
+    db.Column("book_isbn", db.Integer, db.ForeignKey("books.isbn"), primary_key = True)
 )#Used to be a class called User_Favorites changed in order to accomadate many to many relationship around ljne 40
 
 
