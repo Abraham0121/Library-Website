@@ -57,6 +57,7 @@ def hello_world():
             if 'description' in book['volumeInfo']:
                 description = book['volumeInfo']['description']
             db_book = Book(
+                isbn=book['volumeInfo']['industryIdentifiers'][0]['identifier'],
                 title=book['volumeInfo']['title'],
                 maturity_rating=book['volumeInfo']['maturityRating'],
                 description=description,
