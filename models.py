@@ -6,11 +6,18 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = "users"
 
-    id = db.Column(db.Integer, primary_key = True)
-    username = db.Column(db.String(30), unique=True, nullable = False)
+    # id = db.Column(db.Integer, primary_key = True)
+    username = db.Column(db.String(30), primary_key=True)
     password = db.Column(db.String(30), nullable = False)
 
     favorites = db.relationship('Book', secondary = 'favorites')
+
+    def has_favorite(self, book):
+        for favorite in self.favorites:
+            if favorite.isbn==book.isbn:
+                return True
+        return False
+        
 
 class Book(db.Model):
     __tablename__ = "books"
@@ -44,7 +51,7 @@ class Category_Book(db.Model):
     category = db.Column(db.String)
 
 favorites = db.Table("favorites",
-    db.Column("user_id", db.Integer, db.ForeignKey("users.id"), primary_key = True),
+    db.Column("username", db.String, db.ForeignKey("users.username"), primary_key = True),
     db.Column("book_id", db.Integer, db.ForeignKey("books.isbn"), primary_key = True)
 )#Used to be a class called User_Favorites changed in order to accomadate many to many relationship around ljne 40
 

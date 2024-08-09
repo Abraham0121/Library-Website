@@ -18,7 +18,7 @@ API_KEY = 'AIzaSyDM7IREB5FJ2dom6ZIlXuW9rVxITR4qOyc'
 
 connect_db(app)
 
-db.drop_all()
+# db.drop_all()
 db.create_all()
         
 
@@ -68,9 +68,10 @@ def hello_world():
     first_ten_books = res['items'][:10]
     favorites = []
     if 'username' in session:
+        print(User.query.all(),session['username'],"STUFFFFFF")
         favorites = User.query.get(session['username']).favorites
 
-    return render_template('home.html', url=final_url, books=first_ten_books, favorites=favorites)
+    return render_template('home.html', books=first_ten_books, favorites=favorites, User=User)
 
 # @app.route('/1')
 # def number_one():
@@ -134,7 +135,7 @@ def book_detail(isbn):
 def favorite_book(isbn):
     book = Book.query.get(isbn)
     if book and 'username' in session:
-        user = User.query.filter_by(username=session['username'])
+        user = User.query.get(session['username'])
         user.favorites.append(book)
         db.session.add(user)
         db.session.commit()
