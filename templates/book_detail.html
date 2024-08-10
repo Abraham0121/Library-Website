@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-<div>
+<div class="Book-detail">
     <h1>{{ book.title }}</h1>
-    <img src="{{ book.image }}">
+    <div class="Book-detail-image-container">
+        <img src="{{ book.image }}">
+    </div>
     <p>This book is rated {{ book.maturity_rating }}.</p>
     <p>Description: {{book.description}}</p>
 </div>

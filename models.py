@@ -12,9 +12,9 @@ class User(db.Model):
 
     favorites = db.relationship('Book', secondary = 'favorites')
 
-    def has_favorite(self, book):
+    def has_favorite(self, isbn):
         for favorite in self.favorites:
-            if favorite.isbn==book.isbn:
+            if favorite.isbn==isbn:
                 return True
         return False
         
@@ -22,7 +22,7 @@ class User(db.Model):
 class Book(db.Model):
     __tablename__ = "books"
 
-    isbn = db.Column(db.Integer, primary_key = True)
+    isbn = db.Column(db.String, primary_key = True)
     kind = db.Column(db.String)
     title = db.Column(db.String) #FORGOT TO ADD BEFORE?
     publish_date = db.Column(db.String)
@@ -36,24 +36,29 @@ class Book(db.Model):
     categories = db.relationship('Category_Book')
     authors = db.relationship('Book_Author')
 
+    def __eq__(self, other):
+        return self.isbn == other.isbn
+
 class Book_Author(db.Model):
     __tablename__ = "book_authors"
 
     id = db.Column(db.Integer, primary_key = True)
-    book_id = db.Column(db.Integer, db.ForeignKey("books.isbn"))
+    book_isbn = db.Column(db.String, db.ForeignKey("books.isbn"))
     author = db.Column(db.String)
 
 class Category_Book(db.Model):
     __tablename__ = "category_books"
 
     id = db.Column(db.Integer, primary_key = True)
-    book_id = db.Column(db.Integer, db.ForeignKey("books.isbn"))
+    book_isbn = db.Column(db.String, db.ForeignKey("books.isbn"))
     category = db.Column(db.String)
 
 favorites = db.Table("favorites",
     db.Column("username", db.String, db.ForeignKey("users.username"), primary_key = True),
-    db.Column("book_isbn", db.Integer, db.ForeignKey("books.isbn"), primary_key = True)
+    db.Column("book_isbn", db.String, db.ForeignKey("books.isbn"), primary_key = True)
 )#Used to be a class called User_Favorites changed in order to accomadate many to many relationship around ljne 40
+
+# add holds table
 
 
 def connect_db(app):
