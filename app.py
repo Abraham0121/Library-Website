@@ -85,7 +85,7 @@ def register():
         username=request.form['username']
         existing_user = User.query.filter_by(username=username).one_or_none()
         if existing_user:
-            flash("This username already exists.")
+            flash("This username already exists.", "danger")
             return render_template('register.html')
         else:
             user = User(
@@ -95,7 +95,7 @@ def register():
             
             db.session.add(user)
             db.session.commit()
-            flash("Your account has been created.")
+            flash("Your account has been created.", "success")
             session['username'] = username
             return redirect('/')
 
@@ -111,11 +111,11 @@ def login():
         password = request.form['password']
         existing_user = User.query.filter_by(username=username, password=password).one_or_none()
         if existing_user:
-            flash('You are now logged in.')
+            flash('You are now logged in.', "success")
             session['username'] = username
             return redirect('/')
         else:
-            flash('Sorry those login credentials do not work. Try again')
+            flash('Sorry those login credentials do not work. Try again', "danger")
             return render_template('login.html')
 
 @app.route('/logout')
@@ -124,10 +124,10 @@ def logout():
 
     if 'username' in session:
         session.pop('username')
-        flash('You have successfully logged out')
+        flash('You have successfully logged out', "success")
         return redirect('/')
     else:
-        flash('You are not logged in')
+        flash('You are not logged in', "danger")
         return redirect('/login')
 
 @app.route('/books/<isbn>')
@@ -139,10 +139,10 @@ def book_detail(isbn):
         if book:
             return render_template('book_detail.html', book=book)
 
-        flash('This book does not exist.')
+        flash('This book does not exist.', "danger")
         return redirect('/')
 
-    flash('Please login to use this feature.')
+    flash('Please login to use this feature.', "danger")
     return redirect('/login')
 
 ################################################### Favorite Books ##############
@@ -150,13 +150,7 @@ def book_detail(isbn):
 @app.route('/books/favorites')
 def get_favorite_books():
     """ Get all your favorite books """
-
-    if 'username' in session:
-        user = User.query.filter_by(username=session['username'])
-        return render_template("favorites.html", favorites=user.favorites)
-
-    flash('You must be logged in to get your favorite books')
-    return redirect('/login')
+    # Note: you should add a link in the nav linking to this route
 
 
 @app.route('/books/<isbn>/favorite', methods=['POST'])
@@ -180,14 +174,36 @@ def favorite_book(isbn):
 
 ################################################### Books on Hold ##############
 
-@app.route('/books')
+@app.route('/books/onhold')
 def show_books():
-    """ render user_books.html with all variables needed. Read the html file for more details"""
+    """ render books_on_hold.html with all variables needed. Read the html file for more details"""
+    # Make sure to add a link in the nav to this route
 
     return "dummy return"
 
 @app.route('/books/<isbn>/hold', methods=['POST'])
 def make_hold():
-    """ Put a book on hold """
+    """ Put a book on hold or remove hold """
+    # Note: 1) You should add someway to put a hold on books on the book previews on the homepage.
+    # You can use a basic button, a fontawesome icon, or etc. Just make sure that it adds a hold 
+    # or removes a hold based on whether or not the user already has it on hold.
+    # 2) To do this you should make the appropiate table in the models.py file.
+
 
     return "dummy return"
+
+################################################### Extra Implementations ##############
+
+################################################### Messages ##############
+
+# Use websockets to allow a real live chat between a librarian and a user
+# Noah has never used websockets so this will be a learning experience
+
+################################################### Book reviews ##############
+
+# Would need to make appropiate table(s)
+
+################################################### Show nearby libraries ##############
+
+# Would need to use google maps api
+# and if possible we could link to their websites
