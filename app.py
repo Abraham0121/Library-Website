@@ -51,16 +51,17 @@ def homepage():
     for book in books:
         if not Book.query.filter_by(title=book['volumeInfo']['title']).one_or_none():
             description=""
+            image=""
             if 'description' in book['volumeInfo']:
                 description = book['volumeInfo']['description']
-                print(book['volumeInfo']['imageLinks']['thumbnail'])
+            if 'imageLinks' in book['volumeInfo']:
+                image=book['volumeInfo']['imageLinks']['thumbnail'] 
             db_book = Book(
                 isbn=book['volumeInfo']['industryIdentifiers'][0]['identifier'],
                 title=book['volumeInfo']['title'],
                 maturity_rating=book['volumeInfo']['maturityRating'],
                 description=description,
-                image= book['volumeInfo']['imageLinks']['thumbnail']
-                
+                image=image  
             )
             db.session.add(db_book)
             db.session.commit()
