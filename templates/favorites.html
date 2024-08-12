@@ -1,2 +1,21 @@
 <!--Make a page showing all the favorite books for a user. Don't worry too much about styling.
 Make sure that it is like the homepage showiing book previews linking to the book_detail page-->
+{% extends 'base.html' %}
+{% block content %}
+<div id="Favorites">
+{% if user.favorites == [] %}
+<p>There are no books on hold.</p>
+{% else %}
+{% for book in user.favorites %}
+<div class="book-on-hold">
+    <p>{{book.title}}</p>
+    <img src="{{book.image}}">
+    <p>{{book.description}}</p>
+</div>
+
+
+{% endfor %}
+
+{% endif %}
+</div>
+{% endblock %}

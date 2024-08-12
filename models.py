@@ -11,10 +11,17 @@ class User(db.Model):
     password = db.Column(db.String(30), nullable = False)
 
     favorites = db.relationship('Book', secondary = 'favorites')
+    holds =  db.relationship('Book', secondary = 'holds')
 
     def has_favorite(self, isbn):
         for favorite in self.favorites:
             if favorite.isbn==isbn:
+                return True
+        return False
+    
+    def has_hold(self, isbn):
+        for hold in self.holds:
+            if hold.isbn ==isbn:
                 return True
         return False
         
@@ -59,6 +66,11 @@ favorites = db.Table("favorites",
 )#Used to be a class called User_Favorites changed in order to accomadate many to many relationship around ljne 40
 
 # add holds table
+holds = db.Table(
+    "holds",
+    db.Column("username", db.String, db.ForeignKey("users.username"), primary_key=True),
+    db.Column("book_isbn", db.String, db.ForeignKey("books.isbn"), primary_key = True)
+)
 
 
 def connect_db(app):

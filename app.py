@@ -71,6 +71,7 @@ def homepage():
     if 'username' in session:
         # cleaned up code by removing favorites and passed in user instead of User
         user = User.query.get(session['username'])
+        print("WASSUP",user.holds)
         return render_template('home.html', books=first_ten_books, user=user)
 
     return render_template('home.html', books=first_ten_books, user=None)
@@ -152,6 +153,9 @@ def book_detail(isbn):
 def get_favorite_books():
     """ Get all your favorite books """
     # Note: you should add a link in the nav linking to this route
+    user = User.query.get(session['username'])
+
+    return render_template('favorites.html', user=user)
 
 
 @app.route('/books/<isbn>/favorite', methods=['POST'])
@@ -179,16 +183,33 @@ def favorite_book(isbn):
 def show_books():
     """ render books_on_hold.html with all variables needed. Read the html file for more details"""
     # Make sure to add a link in the nav to this route
+    user = User.query.get(session['username'])
 
-    return "dummy return"
+    return render_template("books_on_hold.html", user=user)
 
 @app.route('/books/<isbn>/hold', methods=['POST'])
-def make_hold():
+def make_hold(isbn):
     """ Put a book on hold or remove hold """
     # Note: 1) You should add someway to put a hold on books on the book previews on the homepage.
     # You can use a basic button, a fontawesome icon, or etc. Just make sure that it adds a hold 
     # or removes a hold based on whether or not the user already has it on hold.
     # 2) To do this you should make the appropiate table in the models.py file.
+    book = Book.query.get(isbn)
+    if 'username' in session:
+        user = User.query.get(session['username'])
+        if user.has_hold(isbn):
+            print("remove holds")
+            user.holds.remove(book)
+            print("hello", user.holds)
+            db.session.commit()
+            return jsonify({"Not On Hold": isbn})
+        else:
+            print("on hold")
+            user = User.query.get(session['username'])
+            user.holds.append(book)
+            db.session.commit()
+            return jsonify({"On Hold": isbn})
+
 
 
     return "dummy return"

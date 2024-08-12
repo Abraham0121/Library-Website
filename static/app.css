@@ -33,6 +33,50 @@ nav a{
     text-decoration: none;
     display: block;
 }
+/***************************************Books_On_Hold*/
+
+.book-on-hold {
+    padding: 10px;
+    background-color: #C0C0C0;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    margin-bottom: 15px;
+}
+
+#Holds {
+    width: 800px;
+    margin: 0 auto;
+    /* border: 1px solid black; */
+    border-radius: 6px;
+    position: relative;
+    top: 80px;
+    padding: 25px;
+    color: #ecf0f1;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.book-on-hold {
+    position: relative;
+}
+
+.bookmark-container-onhold {
+    position: absolute;
+    right: 35px;
+    top: 35px;
+}
+
+/***************************************Favorites*/
+
+#Favorites {
+    width: 800px;
+    margin: 0 auto;
+    /* border: 1px solid black; */
+    border-radius: 6px;
+    position: relative;
+    top: 80px;
+    padding: 25px;
+    color: #ecf0f1;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
 
 /***************************************Home*/
 
@@ -94,6 +138,13 @@ nav a{
 .star-container {
     position: absolute;
     top: 5px;
+    right: 5px;
+    cursor: pointer;
+}
+
+.bookmark-container {
+    position: absolute;
+    bottom: 5px;
     right: 5px;
     cursor: pointer;
 }
