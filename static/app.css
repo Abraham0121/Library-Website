@@ -3,6 +3,22 @@ body{
     margin: 0;
 }
 
+#chat {
+    border-radius: 50%;
+    border: 0;
+    width: 80px;
+    height: 80px;
+    position: fixed;
+    right: 40px;
+    bottom: 100px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background-color: green;
+}
+
+#chat svg {
+    width: 50px;
+}
+
 /***************************************Nav*/
 
 nav{
@@ -59,6 +75,7 @@ nav a{
 }
 
 .bookmark-container-onhold {
+    cursor: pointer;
     position: absolute;
     right: 35px;
     top: 35px;
@@ -129,6 +146,7 @@ nav a{
     background-color: #C0C0C0;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     margin-bottom: 15px;
+    position: relative;
 }
 
 #book-previews li {

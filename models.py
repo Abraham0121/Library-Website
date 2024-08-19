@@ -9,9 +9,11 @@ class User(db.Model):
     # id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(30), primary_key=True)
     password = db.Column(db.String(30), nullable = False)
+    is_librarian = db.Column(db.Boolean, default=False)
 
     favorites = db.relationship('Book', secondary = 'favorites')
     holds =  db.relationship('Book', secondary = 'holds')
+    messages = db.relationship('Message', lazy='dynamic',foreign_keys='Message.to_username')
 
     def has_favorite(self, isbn):
         for favorite in self.favorites:
@@ -60,6 +62,14 @@ class Category_Book(db.Model):
     book_isbn = db.Column(db.String, db.ForeignKey("books.isbn"))
     category = db.Column(db.String)
 
+class Message(db.Model):
+    __tablename__ = "messages"
+
+    id = db.Column(db.Integer, primary_key = True)
+    text = db.Column(db.String, nullable= False)
+    from_username = db.Column(db.String, db.ForeignKey("users.username"))
+    to_username = db.Column(db.String, db.ForeignKey("users.username"))
+
 favorites = db.Table("favorites",
     db.Column("username", db.String, db.ForeignKey("users.username"), primary_key = True),
     db.Column("book_isbn", db.String, db.ForeignKey("books.isbn"), primary_key = True)
@@ -71,6 +81,7 @@ holds = db.Table(
     db.Column("username", db.String, db.ForeignKey("users.username"), primary_key=True),
     db.Column("book_isbn", db.String, db.ForeignKey("books.isbn"), primary_key = True)
 )
+ 
 
 
 def connect_db(app):

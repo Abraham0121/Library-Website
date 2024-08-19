@@ -39,7 +39,6 @@ def homepage():
         final_url += '+inauthor=' + final_author + '+'
     if 'category' in request.args and request.args['category']:
         final_category = request.args['category']
-        print(final_category=='',"stuff")
         if " " in final_category:
             category_list= request.args['category'].split()
             final_category= '+'.join(category_list)
@@ -71,7 +70,6 @@ def homepage():
     if 'username' in session:
         # cleaned up code by removing favorites and passed in user instead of User
         user = User.query.get(session['username'])
-        print("WASSUP",user.holds)
         return render_template('home.html', books=first_ten_books, user=user)
 
     return render_template('home.html', books=first_ten_books, user=None)
@@ -169,6 +167,7 @@ def favorite_book(isbn):
         if  user.has_favorite(isbn):
             user.favorites.remove(book)
             db.session.commit()
+            print("hELLO")
             return jsonify({"unfavorited": isbn})       
         else:
             user = User.query.get(session['username'])
@@ -198,13 +197,10 @@ def make_hold(isbn):
     if 'username' in session:
         user = User.query.get(session['username'])
         if user.has_hold(isbn):
-            print("remove holds")
             user.holds.remove(book)
-            print("hello", user.holds)
             db.session.commit()
             return jsonify({"Not On Hold": isbn})
         else:
-            print("on hold")
             user = User.query.get(session['username'])
             user.holds.append(book)
             db.session.commit()
