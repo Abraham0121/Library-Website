@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, flash, request, redirect, render_template, session
 from models import connect_db, User, Book, Category_Book, Book_Author, db
 import requests, json
+from events import socketio
 
 
 app=Flask(__name__)
@@ -8,6 +9,11 @@ app.app_context().push()
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///bookreads_database"
 app.config['SECRET_KEY'] = "secret"
+app.config["DEBUG"] = True
+
+# app.register_blueprint(main)
+
+socketio.init_app(app)
 
 BASE_URL='https://www.googleapis.com/books/v1/volumes?q=a' # need to add '&key=' to use API KEY
 API_KEY = 'AIzaSyDM7IREB5FJ2dom6ZIlXuW9rVxITR4qOyc'
@@ -225,3 +231,6 @@ def make_hold(isbn):
 
 # Would need to use google maps api
 # and if possible we could link to their websites
+
+if __name__ == '__main__':
+    socketio.run(app)
