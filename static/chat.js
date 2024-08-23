@@ -13,8 +13,8 @@ document.getElementById("chat-button").addEventListener("click", function () {
 })
 
 document.getElementById("message").addEventListener("keyup", function (event) {
-    if (event.key == "Enter") {
-        let message = document.getElementById("message").value;
+    let message = document.getElementById("message").value;
+    if (event.key == "Enter" && message) {
         socket.emit("new_message", message);
         document.getElementById("message").value = "";
     }
