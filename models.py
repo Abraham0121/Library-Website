@@ -14,6 +14,7 @@ class User(db.Model):
     favorites = db.relationship('Book', secondary = 'favorites')
     holds =  db.relationship('Book', secondary = 'holds')
     messages = db.relationship('Message', lazy='dynamic',foreign_keys='Message.to_username')
+    reviews = db.relationship('Review')
 
     def has_favorite(self, isbn):
         for favorite in self.favorites:
@@ -24,6 +25,12 @@ class User(db.Model):
     def has_hold(self, isbn):
         for hold in self.holds:
             if hold.isbn ==isbn:
+                return True
+        return False
+    
+    def has_review(self, isbn):
+        for review in self.reviews:
+            if isbn == review.book_isbn:
                 return True
         return False
         
@@ -44,6 +51,7 @@ class Book(db.Model):
 
     categories = db.relationship('Category_Book')
     authors = db.relationship('Book_Author')
+    reviews = db.relationship('Review')
 
     def __eq__(self, other):
         return self.isbn == other.isbn
@@ -70,10 +78,22 @@ class Message(db.Model):
     from_username = db.Column(db.String, db.ForeignKey("users.username"))
     to_username = db.Column(db.String, db.ForeignKey("users.username"))
 
+class Review(db.Model):
+    __tablename__ = "reviews"
+
+    id = db.Column(db.Integer, primary_key = True)
+    text = db.Column(db.String, nullable= False)
+    book_isbn = db.Column(db.String, db.ForeignKey("books.isbn"))
+    username = db.Column(db.String, db.ForeignKey("users.username"))
+    number_of_stars = db.Column(db.Integer, nullable=False)
+
+    def is_ok(self):
+        return (self.number_of_stars >= 1 and self.number_of_stars <= 5)
+
 favorites = db.Table("favorites",
     db.Column("username", db.String, db.ForeignKey("users.username"), primary_key = True),
     db.Column("book_isbn", db.String, db.ForeignKey("books.isbn"), primary_key = True)
-)#Used to be a class called User_Favorites changed in order to accomadate many to many relationship around ljne 40
+)
 
 # add holds table
 holds = db.Table(

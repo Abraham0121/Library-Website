@@ -8,4 +8,22 @@
     <p>This book is rated {{ book.maturity_rating }}.</p>
     <p>Description: {{book.description}}</p>
 </div>
+{% if not user.has_review(book.isbn) %}
+<form action="/books/{{book.isbn}}/review" method="post">
+    <!-- <label for="review-text">Please put your review here</label> -->
+    <textarea name="review-text" id="review-text" rows="15" cols="50"
+        placeholder="Please put your review here"></textarea><br>
+    <!-- <label for="num-of-stars">Please input your number of stars</label> -->
+    <input type="number" name="num-of-stars" id="num-of-stars" placeholder="# of stars here" />
+    <button type="submit">Save</button>
+</form>
+{% endif %}
+
+{% for review in book.reviews %}
+<div class="review">
+    <p>{{review.username}}'s review is: {{review.text}}</p>
+    <p>Number of stars: {{review.number_of_stars}}</p>
+</div>
+{% endfor %}
+
 {% endblock %}

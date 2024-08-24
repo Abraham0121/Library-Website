@@ -12,7 +12,7 @@ body{
     right: 40px;
     bottom: 100px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    background-color: green;
+    background-color: #2980b9;
     cursor: pointer;
 }
 
@@ -251,6 +251,17 @@ nav a{
     width: 130px;
     padding: 5px;
     border: 4px solid black;
+}
+
+.review {
+    border:1px solid black;
+    padding: 10px;
+}
+
+/***********************************************Reviews*/
+
+#review-text {
+    
 }
 
 /***************************************Flash Messages*/

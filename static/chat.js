@@ -8,8 +8,12 @@ document.getElementById("chat-button").addEventListener("click", function () {
     socket.on("connect", function () {
         socket.emit("user_join", "library_guest");
     })
-
+    if (document.getElementById("chat").style.display == "none"){
     document.getElementById("chat").style.display = "block";
+    }
+    else {
+        document.getElementById("chat").style.display = "none";
+    }
 })
 
 document.getElementById("message").addEventListener("keyup", function (event) {

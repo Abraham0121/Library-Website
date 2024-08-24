@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, flash, request, redirect, render_template, session
-from models import connect_db, User, Book, Category_Book, Book_Author, db
+from models import connect_db, User, Book, Category_Book, Book_Author, db, Review
 import requests, json
 from events import socketio
 
@@ -7,7 +7,7 @@ from events import socketio
 app=Flask(__name__)
 app.app_context().push() 
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///bookreads_database"
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://bookreads_database_owner:BrnwRdX8x1qZ@ep-noisy-water-a5s3a863.us-east-2.aws.neon.tech/bookreads_database?sslmode=require"
 app.config['SECRET_KEY'] = "secret"
 app.config["DEBUG"] = True
 
@@ -142,8 +142,11 @@ def book_detail(isbn):
 
     if 'username' in session:
         book = Book.query.get(isbn)
+        user = User.query.get(session['username'])
+        print(Review.query.all())
+        print(user.reviews, "reviews")
         if book:
-            return render_template('book_detail.html', book=book)
+            return render_template('book_detail.html', book=book, user=user)
 
         flash('This book does not exist.', "danger")
         return redirect('/')
@@ -226,6 +229,37 @@ def make_hold(isbn):
 ################################################### Book reviews ##############
 
 # Would need to make appropiate table(s)
+# make a route for making a review
+# display averge rating on book previews
+# display reviews on bottom of book detail page
+
+@app.route('/books/<isbn>/review', methods=['GET','POST'])
+def book_review(isbn):
+    book = Book.query.get(isbn)
+    user = User.query.get(session['username'])
+   
+    if user.has_review(isbn):
+        #display the previous review
+        flash("You have already reviewed this book.",'danger')
+        return redirect('/')
+    else:
+        #make a review
+        #ask user for number of stars
+        #ask user for text review
+        number_of_stars = 0
+        review_text = ""
+        if 'num-of-stars' in request.form:
+            number_of_stars = request.form['num-of-stars']
+        if 'review-text' in request.form:
+            review_text = request.form['review-text']
+        if number_of_stars and review_text:
+            print("HELLO1")
+            review = Review(text = review_text, number_of_stars = number_of_stars, username= session['username'], book_isbn=isbn)
+            print(review)
+            db.session.add(review)
+            db.session.commit()
+       
+    return redirect('/')
 
 ################################################### Show nearby libraries ##############
 
