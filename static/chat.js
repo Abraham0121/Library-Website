@@ -6,7 +6,9 @@ document.getElementById("chat-button").addEventListener("click", function () {
     socket.connect();
 
     socket.on("connect", function () {
+        console.log("before")
         socket.emit("user_join", "library_guest");
+        console.log("in connect operations")
     })
     if (document.getElementById("chat").style.display == "none"){
     document.getElementById("chat").style.display = "block";
