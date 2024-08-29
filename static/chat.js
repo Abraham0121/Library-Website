@@ -1,4 +1,4 @@
-const socket = io({ autoConnect: false });
+const socket = io('wss://library-website-1kdk.onrender.com/');
 
 document.getElementById("chat-button").addEventListener("click", function () {
     // let username = document.getElementById("username").value;
