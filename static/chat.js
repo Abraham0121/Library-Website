@@ -5,8 +5,9 @@ document.getElementById("chat-button").addEventListener("click", function () {
 
     socket.connect();
 
-    socket.on("connect", function () {
+    socket.on("connect_error", function (err) {
         console.log("before")
+        console.log(err.message)
         socket.emit("user_join", "library_guest");
         console.log("in connect operations")
     })
