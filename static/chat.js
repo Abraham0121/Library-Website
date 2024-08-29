@@ -19,8 +19,10 @@ document.getElementById("chat-button").addEventListener("click", function () {
 })
 
 document.getElementById("message").addEventListener("keyup", function (event) {
+    console.log("before message")
     let message = document.getElementById("message").value;
     if (event.key == "Enter" && message) {
+        console.log('in event.key')
         socket.emit("new_message", message);
         document.getElementById("message").value = "";
     }
